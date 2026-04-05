@@ -1,0 +1,40 @@
+name: sync-skills
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - ".github/workflows/sync-skills.yml"
+      - "README.md"
+      - "docs/**"
+      - "scripts/**"
+      - "skills/**"
+      - "sources.yaml"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/sync-skills.yml"
+      - "README.md"
+      - "docs/**"
+      - "scripts/**"
+      - "skills/**"
+      - "sources.yaml"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Validate committed repository output
+        run: node scripts/validate-skills.mjs
+
+      - name: Exercise sync script in non-destructive mode
+        run: node scripts/sync-skills.mjs --check --allow-missing-sources
