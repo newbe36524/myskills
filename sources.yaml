@@ -1,0 +1,33 @@
+version: 1
+skillsRoot: skills
+metadataFile: .skill-source.json
+managedBy: scripts/sync-skills.mjs
+remoteRepository: newbe36524/myskills
+staleCleanup: true
+sources:
+  - key: first-party
+    label: First-party local skills
+    kind: first-party
+    root: /home/newbe36524/.agents/skills
+    targetPrefix: ""
+    include:
+      - documentation-writer
+      - find-skills
+      - frontend-design
+      - hagi
+      - humanizer-zh
+      - remotion-best-practices
+      - skill-creator
+      - ui-ux-pro-max
+      - vercel-react-best-practices
+  - key: system
+    label: Mirrored system skills
+    kind: mirrored-system
+    root: /home/newbe36524/.codex/skills/.system
+    targetPrefix: system-
+    include:
+      - imagegen
+      - openai-docs
+      - plugin-creator
+      - skill-creator
+      - skill-installer
