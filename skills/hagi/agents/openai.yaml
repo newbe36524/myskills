@@ -1,0 +1,7 @@
+interface:
+  display_name: "Hagi CLI"
+  short_description: "Operate and modify the local HagiCode CLI in repos/cli."
+  default_prompt: "Use $hagi to inspect, run, or update the HagiCode CLI in repos/cli."
+
+policy:
+  allow_implicit_invocation: true

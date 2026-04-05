@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "managed": true,
+  "managedBy": "scripts/sync-skills.mjs",
+  "sourceKey": "first-party",
+  "sourceKind": "first-party",
+  "sourceLabel": "First-party local skills",
+  "sourceRoot": "/home/newbe36524/.agents/skills",
+  "sourcePath": "/home/newbe36524/.agents/skills/documentation-writer",
+  "originalName": "documentation-writer",
+  "installName": "documentation-writer",
+  "targetName": "documentation-writer",
+  "targetPath": "skills/documentation-writer",
+  "remoteRepository": "newbe36524/myskills",
+  "files": [
+    "hagicode-skill.json",
+    "SKILL.md"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "managed": true,
+  "managedBy": "scripts/sync-skills.mjs",
+  "sourceKey": "first-party",
+  "sourceKind": "first-party",
+  "sourceLabel": "First-party local skills",
+  "sourceRoot": "/home/newbe36524/.agents/skills",
+  "sourcePath": "/home/newbe36524/.agents/skills/humanizer-zh",
+  "originalName": "humanizer-zh",
+  "installName": "humanizer-zh",
+  "targetName": "humanizer-zh",
+  "targetPath": "skills/humanizer-zh",
+  "remoteRepository": "newbe36524/myskills",
+  "files": [
+    "hagicode-skill.json",
+    "LICENSE",
+    "README.md",
+    "SKILL.md"
+  ]
+}

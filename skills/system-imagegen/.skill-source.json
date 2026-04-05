@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "managed": true,
+  "managedBy": "scripts/sync-skills.mjs",
+  "sourceKey": "system",
+  "sourceKind": "mirrored-system",
+  "sourceLabel": "Mirrored system skills",
+  "sourceRoot": "/home/newbe36524/.codex/skills/.system",
+  "sourcePath": "/home/newbe36524/.codex/skills/.system/imagegen",
+  "originalName": "imagegen",
+  "installName": "system-imagegen",
+  "targetName": "system-imagegen",
+  "targetPath": "skills/system-imagegen",
+  "remoteRepository": "newbe36524/myskills",
+  "files": [
+    "agents/openai.yaml",
+    "assets/imagegen-small.svg",
+    "assets/imagegen.png",
+    "LICENSE.txt",
+    "references/cli.md",
+    "references/codex-network.md",
+    "references/image-api.md",
+    "references/prompting.md",
+    "references/sample-prompts.md",
+    "scripts/image_gen.py",
+    "SKILL.md"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "skillId": "vercel-labs/skills/find-skills",
+  "source": "vercel-labs/skills",
+  "skillSlug": "find-skills",
+  "normalizedSkillKey": "vercel-labs/skills@find-skills",
+  "installReference": "vercel-labs/skills@find-skills",
+  "recordedAtUtc": "2026-03-31T08:39:01.3844248+00:00"
+}

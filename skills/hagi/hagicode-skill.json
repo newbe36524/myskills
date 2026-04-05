@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "skillId": "HagiCode-org/cli/hagi",
+  "source": "HagiCode-org/cli",
+  "skillSlug": "hagi",
+  "normalizedSkillKey": "hagicode-org/cli@hagi",
+  "installReference": "HagiCode-org/cli@hagi",
+  "recordedAtUtc": "2026-04-02T01:26:42.8507499+00:00"
+}

@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "managed": true,
+  "managedBy": "scripts/sync-skills.mjs",
+  "sourceKey": "first-party",
+  "sourceKind": "first-party",
+  "sourceLabel": "First-party local skills",
+  "sourceRoot": "/home/newbe36524/.agents/skills",
+  "sourcePath": "/home/newbe36524/.agents/skills/find-skills",
+  "originalName": "find-skills",
+  "installName": "find-skills",
+  "targetName": "find-skills",
+  "targetPath": "skills/find-skills",
+  "remoteRepository": "newbe36524/myskills",
+  "files": [
+    "hagicode-skill.json",
+    "SKILL.md"
+  ]
+}
