@@ -224,14 +224,18 @@ test("maintainer entrypoints stay template-aligned", async () => {
   ]);
 
   assert.match(readme, /npm ci/);
+  assert.match(readme, /npm install --global @hagicode\/skillsbase/);
   assert.match(readme, /skillsbase github_action --kind all --repo \./);
   assert.doesNotMatch(readme, /bin\/skillsbase\.mjs/);
   assert.match(workflowDoc, /npm ci/);
+  assert.match(workflowDoc, /npm install --global @hagicode\/skillsbase/);
   assert.match(workflowDoc, /kind:\s*github-repository/);
   assert.doesNotMatch(workflowDoc, /bin\/skillsbase\.mjs/);
   assert.match(skillsReadme, /GitHub-sourced community skills/);
-  assert.match(workflow, /npm run sync:check/);
-  assert.match(action, /npm run sync:check/);
+  assert.match(workflow, /npm install --global @hagicode\/skillsbase/);
+  assert.match(workflow, /skillsbase sync --check --repo \./);
+  assert.match(action, /npm install --global @hagicode\/skillsbase/);
+  assert.match(action, /skillsbase sync --check --repo \./);
 });
 
 test("manifest and managed metadata follow the skillsbase contract", async () => {
