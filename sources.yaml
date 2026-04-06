@@ -7,30 +7,89 @@ managedBy: skillsbase
 remoteRepository: newbe36524/myskills
 staleCleanup: true
 skillsCliVersion: 1.4.8
+installAgent: codex
+
+# Repository-specific source blocks extend the template baseline below.
 sources:
-  - key: first-party
-    label: "First-party local skills"
-    kind: first-party
-    root: /home/newbe36524/.agents/skills
+  - key: github-awesome-copilot
+    label: "GitHub Awesome Copilot skills"
+    kind: github-repository
+    root: github/awesome-copilot
     targetPrefix: ""
     include:
       - documentation-writer
+
+  - key: vercel-labs-skills
+    label: "Vercel Labs skills"
+    kind: github-repository
+    root: vercel-labs/skills
+    targetPrefix: ""
+    include:
       - find-skills
-      - frontend-design
-      - hagi
-      - humanizer-zh
-      - remotion-best-practices
+
+  - key: anthropics-skills
+    label: "Anthropic skills"
+    kind: github-repository
+    root: anthropics/skills
+    targetPrefix: ""
+    include:
       - skill-creator
+
+  - key: hagicode-cli
+    label: "HagiCode CLI skills"
+    kind: github-repository
+    root: HagiCode-org/cli
+    targetPrefix: ""
+    include:
+      - hagi
+
+  - key: op7418-humanizer-zh
+    label: "humanizer-zh repository"
+    kind: github-repository
+    root: op7418/humanizer-zh
+    targetPrefix: ""
+    include:
+      - humanizer-zh
+
+  - key: nextlevelbuilder-ui-ux-pro-max
+    label: "UI UX Pro Max skills"
+    kind: github-repository
+    root: nextlevelbuilder/ui-ux-pro-max-skill
+    targetPrefix: ""
+    include:
       - ui-ux-pro-max
+
+  - key: remotion-dev-skills
+    label: "Remotion skills"
+    kind: github-repository
+    root: remotion-dev/skills
+    targetPrefix: ""
+    include:
+      - remotion-best-practices
+
+  - key: vercel-labs-agent-skills
+    label: "Vercel Labs agent skills"
+    kind: github-repository
+    root: vercel-labs/agent-skills
+    targetPrefix: ""
+    include:
       - vercel-react-best-practices
-  - key: system
-    label: "Mirrored system skills"
-    kind: mirrored-system
-    root: /home/newbe36524/.codex/skills/.system
+
+  - key: openai-skills-system
+    label: "OpenAI skills"
+    kind: github-repository
+    root: openai/skills
     targetPrefix: system-
     include:
       - imagegen
       - openai-docs
-      - plugin-creator
       - skill-creator
       - skill-installer
+
+  - key: openai-plugins-system
+    label: "OpenAI plugins skills"
+    kind: github-repository
+    root: openai/plugins
+    targetPrefix: system-
+    include:
+      - plugin-creator
