@@ -35,8 +35,11 @@ jobs:
       - name: Upgrade npm
         run: npm install --global npm@10.9.2
 
+      - name: Install skillsbase
+        run: npm install --global @hagicode/skillsbase
+
       - name: Run tests
         run: npm test
 
       - name: Validate managed repository state
-        run: npm run sync:check
+        run: skillsbase sync --check --repo .
