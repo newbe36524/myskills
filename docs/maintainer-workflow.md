@@ -2,7 +2,15 @@
 
 # Maintainer Workflow
 
-结论是：维护流以 `npm ci -> npm run sync -> npm test` 为主。
+The maintainer flow stays template-derived: `npm ci -> npm run sync -> npm test -> npm run sync:check`.
+
+## Ownership Audit
+
+| Classification | Paths | Maintenance rule |
+| --- | --- | --- |
+| Baseline-owned | `package.json`, `sources.yaml`, `README.md`, `docs/maintainer-workflow.md`, `skills/README.md`, `.github/workflows/skills-sync.yml`, `.github/actions/skillsbase-sync/action.yml` | Keep the template placement and responsibility split stable. |
+| Extension-owned | repository-specific `sources.yaml` blocks, `skills/<name>/`, `skills/system-<name>/`, `tests/repository-contract.test.mjs` | Preserve only the documented `myskills` source inventory and naming differences. |
+| Obsolete | `scripts/sync-skills.mjs`, `scripts/validate-skills.mjs`, other ad hoc root sync helpers | Do not reintroduce replaced structure files. |
 
 ## Lifecycle
 
@@ -10,29 +18,43 @@
 2. `npm run sync`
 3. `npm test`
 4. `npm run sync:check`
-5. `node ./bin/skillsbase.mjs github_action --kind all`
+5. `skillsbase github_action --kind all --repo .` only when the managed GitHub assets must be regenerated
 
-## Source policy
+## Manifest Contract
 
-- `sources.yaml` 是单一真相源。
-- 第一方来源根目录：`/home/newbe36524/.agents/skills`
-- 系统镜像来源根目录：`/home/newbe36524/.codex/skills/.system`
-- `skills/` 只保存受管输出。
-- `.skill-source.json` 记录来源、安装器元数据与受管文件列表。
+- `sources.yaml` is the single source of truth.
+- The baseline manifest keys remain explicit: `version`, `skillsRoot`, `metadataFile`, `managedBy`, `remoteRepository`, `staleCleanup`, `skillsCliVersion`, and `installAgent`.
+- Every source block uses `kind: github-repository`, so `skillsbase sync` installs through `npx skills add <owner/repo@skill>`.
+- Community skills preserve their original install names.
+- OpenAI-hosted skills publish with the `system-` prefix.
+- `skills/**` is managed output only.
+- Each `.skill-source.json` records provenance, install metadata, and the managed file list used for drift detection.
 
-## Naming rules
+## Naming Rules
 
-- 第一方技能保持原名：`skills/<name>/`
-- 系统镜像技能保持 `system-` 前缀：`skills/system-<name>/`
-- 若名称冲突，第一方名称优先，系统镜像继续使用前缀名
+- GitHub-sourced community skills keep their original names: `skills/<name>/`
+- OpenAI-hosted skills keep the `system-` prefix: `skills/system-<name>/`
+- The hosted repository identity remains `newbe36524/myskills`
 
-## Validation lanes
+## Validation
 
-- `npm test` 校验提交产物、元数据约束与 `npx skills add . --list` 兼容性，不依赖本地来源根目录。
-- `npm run sync:check` 只校验漂移，不改仓库。
-- `node ./bin/skillsbase.mjs sync --check` 在 GitHub-hosted Actions 中会自动补 `--allow-missing-sources`。
+- `npm run sync` rebuilds the managed output from the declared GitHub repositories.
+- `npm test` validates template-derived structure, GitHub source contracts, metadata invariants, and `npx skills add . --list` compatibility.
+- `npm run sync:check` validates drift without writing files.
+- The GitHub workflow and composite action now call `skillsbase` directly, matching the template entrypoint shape.
+
+## Non-Interactive Flow
+
+CI and other non-interactive environments should run:
+
+```bash
+npm ci
+npm test
+npm run sync:check
+```
 
 ## Notes
 
-- 勿再以 `scripts/sync-skills.mjs` 或 `scripts/validate-skills.mjs` 作为主流程。
-- 远程安装路径保持不变：`npx skills add newbe36524/myskills -g --all`
+- Do not edit `skills/**` managed files by hand; update `sources.yaml` to point at the correct GitHub repository source, then rerun `npm run sync`.
+- Do not reintroduce obsolete root-level sync helper scripts or the removed repo-local wrapper.
+- The public install surface stays stable: `npx skills add newbe36524/myskills -g --all`
