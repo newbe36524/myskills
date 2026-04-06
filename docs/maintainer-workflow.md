@@ -1,49 +1,38 @@
-# Maintainer workflow
+<!-- Managed by skillsbase CLI. -->
 
-## Purpose
+# Maintainer Workflow
 
-`newbe36524/myskills` is maintained as a self-hosted aggregate repository. The committed `skills/` tree is the install surface for both local validation and remote installs.
+结论是：维护流以 `npm ci -> npm run sync -> npm test` 为主。
+
+## Lifecycle
+
+1. `npm ci`
+2. `npm run sync`
+3. `npm test`
+4. `npm run sync:check`
+5. `node ./bin/skillsbase.mjs github_action --kind all`
 
 ## Source policy
 
-- First-party source root: `/home/newbe36524/.agents/skills`
-- Mirrored system source root: `/home/newbe36524/.codex/skills/.system`
-- Source-of-truth manifest: `sources.yaml`
-- Managed metadata file: `.skill-source.json`
+- `sources.yaml` 是单一真相源。
+- 第一方来源根目录：`/home/newbe36524/.agents/skills`
+- 系统镜像来源根目录：`/home/newbe36524/.codex/skills/.system`
+- `skills/` 只保存受管输出。
+- `.skill-source.json` 记录来源、安装器元数据与受管文件列表。
 
 ## Naming rules
 
-- First-party skills publish as `skills/<name>/`
-- Mirrored system skills publish as `skills/system-<name>/`
-- Collision handling is deterministic: mirrored system skills always keep the `system-` prefix, so first-party names stay canonical
+- 第一方技能保持原名：`skills/<name>/`
+- 系统镜像技能保持 `system-` 前缀：`skills/system-<name>/`
+- 若名称冲突，第一方名称优先，系统镜像继续使用前缀名
 
-## Refresh workflow
+## Validation lanes
 
-From the repository root:
+- `npm test` 校验提交产物、元数据约束与 `npx skills add . --list` 兼容性，不依赖本地来源根目录。
+- `npm run sync:check` 只校验漂移，不改仓库。
+- `node ./bin/skillsbase.mjs sync --check` 在 GitHub-hosted Actions 中会自动补 `--allow-missing-sources`。
 
-```bash
-node scripts/sync-skills.mjs
-node scripts/validate-skills.mjs
-```
+## Notes
 
-If you need a non-destructive drift check first:
-
-```bash
-node scripts/sync-skills.mjs --check
-```
-
-## Validation workflow
-
-- Local discovery check: `npx skills add . --list`
-- Full contract check: `node scripts/validate-skills.mjs`
-- Canonical remote install path: `npx skills add newbe36524/myskills -g --all`
-
-## Conflict handling
-
-- If a first-party skill and a mirrored system skill share a name, the first-party skill keeps the short name and the mirrored copy becomes `system-<name>`
-- If `sources.yaml` adds a target-name collision outside that rule, `node scripts/sync-skills.mjs` fails fast
-- Stale managed directories are removed only when `.skill-source.json` marks them as script-managed output
-
-## CI note
-
-Hosted CI usually cannot access the machine-local source roots under `/home/newbe36524`. That is expected. CI should validate the committed repository output, while local or self-hosted runs perform the actual sync from those roots.
+- 勿再以 `scripts/sync-skills.mjs` 或 `scripts/validate-skills.mjs` 作为主流程。
+- 远程安装路径保持不变：`npx skills add newbe36524/myskills -g --all`

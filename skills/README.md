@@ -1,19 +1,10 @@
-# Hosted skills
+<!-- Managed by skillsbase CLI. -->
 
-This directory is the installable content root for the `newbe36524/myskills` repository.
+# Managed Skills
 
-## Naming rules
+This directory stores only managed installable output for `newbe36524/myskills`.
 
-- First-party skills keep their original names: `skills/<name>/`
-- Mirrored system skills use a collision-safe prefix: `skills/system-<name>/`
-- Each managed skill directory must contain `SKILL.md` and `.skill-source.json`
-
-## Local discovery
-
-List the repository contents with the same tree that remote consumers install from:
-
-```bash
-npx skills add . --list
-```
-
-Use `node ../scripts/validate-skills.mjs` from this directory or `node scripts/validate-skills.mjs` from the repository root to run the full contract checks.
+- First-party skills keep their original names.
+- Mirrored system skills use the `system-` prefix.
+- Every managed directory must contain `SKILL.md` and `.skill-source.json`.
+- Do not edit managed files directly; update `sources.yaml`, then rerun `npm run sync`.
