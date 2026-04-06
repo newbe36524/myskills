@@ -2,25 +2,23 @@
   "schemaVersion": 1,
   "managed": true,
   "managedBy": "skillsbase",
-  "sourceKey": "first-party",
-  "sourceKind": "first-party",
-  "sourceLabel": "First-party local skills",
-  "sourceRoot": "/home/newbe36524/.agents/skills",
-  "sourcePath": "/home/newbe36524/.agents/skills/documentation-writer",
+  "sourceKey": "github-awesome-copilot",
+  "sourceKind": "github-repository",
+  "sourceLabel": "GitHub Awesome Copilot skills",
+  "sourceRoot": "github/awesome-copilot",
+  "sourcePath": "github/awesome-copilot@documentation-writer",
   "originalName": "documentation-writer",
   "targetName": "documentation-writer",
   "targetPath": "skills/documentation-writer",
   "remoteRepository": "newbe36524/myskills",
   "installAgent": "codex",
-  "installReference": "/home/newbe36524/.agents/skills/documentation-writer",
+  "installReference": "github/awesome-copilot@documentation-writer",
   "installedMetadata": {
     "schemaVersion": 1,
-    "skillId": "github/awesome-copilot/documentation-writer",
     "source": "github/awesome-copilot",
     "skillSlug": "documentation-writer",
-    "normalizedSkillKey": "github/awesome-copilot@documentation-writer",
     "installReference": "github/awesome-copilot@documentation-writer",
-    "recordedAtUtc": "2026-03-30T12:46:50.8807948+00:00"
+    "synthesizedBy": "skillsbase"
   },
   "files": [
     "SKILL.md"
