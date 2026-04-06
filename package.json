@@ -1,0 +1,18 @@
+{
+  "name": "@newbe36524/myskills-repo",
+  "private": true,
+  "type": "module",
+  "packageManager": "npm@10.9.2",
+  "engines": {
+    "node": ">=22.12.0",
+    "npm": ">=10.9.2"
+  },
+  "scripts": {
+    "sync": "node ./bin/skillsbase.mjs sync",
+    "sync:check": "node ./bin/skillsbase.mjs sync --check",
+    "test": "node --test ./tests/*.test.mjs"
+  },
+  "dependencies": {
+    "@hagicode/skillsbase": "0.1.1"
+  }
+}
