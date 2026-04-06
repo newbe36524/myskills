@@ -2,7 +2,7 @@
 
 # Maintainer Workflow
 
-The maintainer flow stays template-derived: `npm ci -> npm run sync -> npm test -> npm run sync:check`.
+The maintainer flow stays template-derived: `npm ci -> npm install --global @hagicode/skillsbase -> npm run sync -> npm test -> npm run sync:check`.
 
 ## Ownership Audit
 
@@ -15,10 +15,11 @@ The maintainer flow stays template-derived: `npm ci -> npm run sync -> npm test 
 ## Lifecycle
 
 1. `npm ci`
-2. `npm run sync`
-3. `npm test`
-4. `npm run sync:check`
-5. `skillsbase github_action --kind all --repo .` only when the managed GitHub assets must be regenerated
+2. `npm install --global @hagicode/skillsbase`
+3. `npm run sync`
+4. `npm test`
+5. `npm run sync:check`
+6. `skillsbase github_action --kind all --repo .` only when the managed GitHub assets must be regenerated
 
 ## Manifest Contract
 
@@ -49,6 +50,7 @@ CI and other non-interactive environments should run:
 
 ```bash
 npm ci
+npm install --global @hagicode/skillsbase
 npm test
 npm run sync:check
 ```

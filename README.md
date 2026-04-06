@@ -28,12 +28,13 @@ Run all maintainer commands from the repository root:
 
 ```bash
 npm ci
+npm install --global @hagicode/skillsbase
 npm run sync
 npm run sync:check
 npm test
 ```
 
-These commands keep the template maintenance surface and call `skillsbase` directly through the repository dependency installed by `npm ci`.
+These commands keep the template maintenance surface. CI installs `skillsbase` globally before running the drift check.
 
 Regenerate the managed GitHub workflow or composite action only when the automation templates change:
 
