@@ -9,14 +9,24 @@ import { promisify } from "node:util";
 
 const execFile = promisify(execFileCallback);
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const packageCliPath = path.join(
-  repoRoot,
-  "node_modules",
-  "@hagicode",
-  "skillsbase",
-  "bin",
-  "skillsbase.mjs",
-);
+const templateRoot = path.resolve(repoRoot, "..", "skillsbase-template");
+const baselineOwnedPaths = [
+  "package.json",
+  "package-lock.json",
+  "sources.yaml",
+  "README.md",
+  "docs/maintainer-workflow.md",
+  "skills/README.md",
+  ".github/workflows/skills-sync.yml",
+  ".github/actions/skillsbase-sync/action.yml",
+];
+const extensionOwnedPaths = ["tests/repository-contract.test.mjs"];
+const obsoletePaths = [
+  "bin/skillsbase.mjs",
+  "scripts/sync-skills.mjs",
+  "scripts/validate-skills.mjs",
+  "source-roots/vendored-first-party",
+];
 
 function parseScalar(rawValue) {
   const value = rawValue.trim();
@@ -113,7 +123,6 @@ async function loadManifest(customRepoRoot = repoRoot) {
     skillsCliVersion:
       typeof manifest.skillsCliVersion === "string" ? manifest.skillsCliVersion : "1.4.8",
     installAgent: typeof manifest.installAgent === "string" ? manifest.installAgent : "codex",
-    manifestPath,
     skillsRootPath: path.join(customRepoRoot, manifest.skillsRoot),
   };
 }
@@ -123,12 +132,16 @@ function buildEntries(manifest, customRepoRoot = repoRoot) {
     .flatMap((source) =>
       source.include.map((originalName) => {
         const targetName = `${source.targetPrefix}${originalName}`;
+        const sourcePath =
+          source.kind === "github-repository"
+            ? `${source.root}@${originalName}`
+            : path.join(source.root, originalName);
         return {
           sourceKey: source.key,
           sourceLabel: source.label,
           sourceKind: source.kind,
           sourceRoot: source.root,
-          sourcePath: path.join(source.root, originalName),
+          sourcePath,
           originalName,
           targetName,
           targetPath: path.join(customRepoRoot, manifest.skillsRoot, targetName),
@@ -177,37 +190,48 @@ async function readSkillInstallName(skillPath) {
   return nameMatch ? nameMatch[1].trim().replace(/^['"]|['"]$/g, "") : null;
 }
 
-test("repository exposes the managed baseline files and maintainer entrypoints", async () => {
-  const requiredPaths = [
-    "package.json",
-    "package-lock.json",
-    "bin/skillsbase.mjs",
-    "sources.yaml",
-    "README.md",
-    "docs/maintainer-workflow.md",
-    "skills/README.md",
-    ".github/workflows/skills-sync.yml",
-    ".github/actions/skillsbase-sync/action.yml",
-  ];
+test("repository keeps the template-derived baseline layout and ownership boundaries", async () => {
+  for (const relativePath of baselineOwnedPaths) {
+    assert.equal(await pathExists(path.join(repoRoot, relativePath)), true, `missing ${relativePath}`);
+    assert.equal(
+      await pathExists(path.join(templateRoot, relativePath)),
+      true,
+      `template baseline missing ${relativePath}`,
+    );
+  }
 
-  for (const relativePath of requiredPaths) {
+  for (const relativePath of extensionOwnedPaths) {
     assert.equal(await pathExists(path.join(repoRoot, relativePath)), true, `missing ${relativePath}`);
   }
 
-  const [readme, workflow, skillsReadme] = await Promise.all([
+  for (const relativePath of obsoletePaths) {
+    assert.equal(await pathExists(path.join(repoRoot, relativePath)), false, `obsolete path present: ${relativePath}`);
+  }
+});
+
+test("maintainer entrypoints stay template-aligned", async () => {
+  const packageJson = JSON.parse(await fs.readFile(path.join(repoRoot, "package.json"), "utf8"));
+  assert.equal(packageJson.scripts.sync, "skillsbase sync --repo .");
+  assert.equal(packageJson.scripts["sync:check"], "skillsbase sync --check --repo .");
+  assert.equal(packageJson.scripts.test, "node --test ./tests/*.test.mjs");
+
+  const [readme, workflowDoc, skillsReadme, workflow, action] = await Promise.all([
     fs.readFile(path.join(repoRoot, "README.md"), "utf8"),
     fs.readFile(path.join(repoRoot, "docs/maintainer-workflow.md"), "utf8"),
     fs.readFile(path.join(repoRoot, "skills/README.md"), "utf8"),
+    fs.readFile(path.join(repoRoot, ".github/workflows/skills-sync.yml"), "utf8"),
+    fs.readFile(path.join(repoRoot, ".github/actions/skillsbase-sync/action.yml"), "utf8"),
   ]);
 
-  assert.match(readme, /npx skills add newbe36524\/myskills -g --all/);
-  assert.match(readme, /npm run sync/);
-  assert.match(readme, /npm test/);
-  assert.doesNotMatch(readme, /scripts\/sync-skills\.mjs/);
-  assert.doesNotMatch(readme, /scripts\/validate-skills\.mjs/);
-  assert.match(workflow, /Managed by skillsbase CLI/);
-  assert.match(workflow, /node \.\/bin\/skillsbase\.mjs github_action --kind all|GitHub-hosted Actions/);
-  assert.match(skillsReadme, /Managed by skillsbase CLI/);
+  assert.match(readme, /npm ci/);
+  assert.match(readme, /skillsbase github_action --kind all --repo \./);
+  assert.doesNotMatch(readme, /bin\/skillsbase\.mjs/);
+  assert.match(workflowDoc, /npm ci/);
+  assert.match(workflowDoc, /kind:\s*github-repository/);
+  assert.doesNotMatch(workflowDoc, /bin\/skillsbase\.mjs/);
+  assert.match(skillsReadme, /GitHub-sourced community skills/);
+  assert.match(workflow, /npm run sync:check/);
+  assert.match(action, /npm run sync:check/);
 });
 
 test("manifest and managed metadata follow the skillsbase contract", async () => {
@@ -215,9 +239,30 @@ test("manifest and managed metadata follow the skillsbase contract", async () =>
   const manifestText = await fs.readFile(path.join(repoRoot, "sources.yaml"), "utf8");
   assert.equal(manifest.managedBy, "skillsbase");
   assert.equal(manifest.skillsCliVersion, "1.4.8");
-  assert.doesNotMatch(manifestText, /^installAgent:/m);
   assert.equal(manifest.installAgent, "codex");
   assert.equal(manifest.remoteRepository, "newbe36524/myskills");
+  assert.equal(manifest.sources.length, 10);
+  assert.match(manifestText, /^installAgent:\s*codex$/m);
+
+  const expectedSources = new Map([
+    ["github-awesome-copilot", { root: "github/awesome-copilot", kind: "github-repository" }],
+    ["vercel-labs-skills", { root: "vercel-labs/skills", kind: "github-repository" }],
+    ["anthropics-skills", { root: "anthropics/skills", kind: "github-repository" }],
+    ["hagicode-cli", { root: "HagiCode-org/cli", kind: "github-repository" }],
+    ["op7418-humanizer-zh", { root: "op7418/humanizer-zh", kind: "github-repository" }],
+    ["nextlevelbuilder-ui-ux-pro-max", { root: "nextlevelbuilder/ui-ux-pro-max-skill", kind: "github-repository" }],
+    ["remotion-dev-skills", { root: "remotion-dev/skills", kind: "github-repository" }],
+    ["vercel-labs-agent-skills", { root: "vercel-labs/agent-skills", kind: "github-repository" }],
+    ["openai-skills-system", { root: "openai/skills", kind: "github-repository" }],
+    ["openai-plugins-system", { root: "openai/plugins", kind: "github-repository" }],
+  ]);
+
+  for (const source of manifest.sources) {
+    const expected = expectedSources.get(source.key);
+    assert.notEqual(expected, undefined, `unexpected source key ${source.key}`);
+    assert.equal(source.kind, expected.kind);
+    assert.equal(source.root, expected.root);
+  }
 
   const entries = buildEntries(manifest);
   const expectedNames = entries.map((entry) => entry.targetName);
@@ -255,6 +300,12 @@ test("manifest and managed metadata follow the skillsbase contract", async () =>
       [...actualFiles].sort((left, right) => left.localeCompare(right)),
     );
     assert.equal(await readSkillInstallName(skillPath), entry.targetName);
+    if (!entry.targetName.startsWith("system-")) {
+      assert.equal(entry.targetName, entry.originalName);
+    }
+    if (entry.sourceKey === "openai-skills-system" || entry.sourceKey === "openai-plugins-system") {
+      assert.equal(entry.targetName, `system-${entry.originalName}`);
+    }
   }
 });
 
@@ -277,69 +328,26 @@ test("npx skills add . --list remains compatible with the committed repository",
   }
 });
 
-test("repo-local wrapper makes sync --check deterministic on GitHub-hosted CI", async () => {
-  const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "myskills-wrapper-test-"));
-  const targetRepo = path.join(tempRoot, "repo");
-  await fs.mkdir(targetRepo, { recursive: true });
-  await fs.cp(path.join(repoRoot, "skills"), path.join(targetRepo, "skills"), { recursive: true });
+test("repo-local drift check stays stable outside the repository working directory", async () => {
+  const childEnv = { ...process.env };
+  delete childEnv.INIT_CWD;
 
-  const manifest = await loadManifest();
-  const rewrittenManifest = [
-    "# Managed by skillsbase CLI.",
-    "# Edit source entries to add or remove managed skills.",
-    "version: 1",
-    "skillsRoot: skills",
-    "metadataFile: .skill-source.json",
-    "managedBy: skillsbase",
-    "remoteRepository: newbe36524/myskills",
-    "staleCleanup: true",
-    `skillsCliVersion: ${manifest.skillsCliVersion}`,
-    `installAgent: ${manifest.installAgent}`,
-    "sources:",
-    '  - key: first-party',
-    '    label: "First-party local skills"',
-    "    kind: first-party",
-    `    root: ${path.join(tempRoot, "missing-first-party")}`,
-    '    targetPrefix: ""',
-    "    include:",
-    ...manifest.sources[0].include.map((skillName) => `      - ${skillName}`),
-    '  - key: system',
-    '    label: "Mirrored system skills"',
-    "    kind: mirrored-system",
-    `    root: ${path.join(tempRoot, "missing-system")}`,
-    "    targetPrefix: system-",
-    "    include:",
-    ...manifest.sources[1].include.map((skillName) => `      - ${skillName}`),
-    "",
-  ].join("\n");
-  await fs.writeFile(path.join(targetRepo, "sources.yaml"), rewrittenManifest, "utf8");
-
-  await assert.rejects(
-    execFile(process.execPath, [packageCliPath, "sync", "--check", "--repo", targetRepo], {
-      cwd: repoRoot,
-      env: {
-        ...process.env,
-        GITHUB_ACTIONS: "true",
-      },
-      maxBuffer: 16 * 1024 * 1024,
-      timeout: 60_000,
-    }),
-  );
+  for (const key of Object.keys(childEnv)) {
+    if (key.startsWith("npm_")) {
+      delete childEnv[key];
+    }
+  }
 
   const { stdout, stderr } = await execFile(
-    process.execPath,
-    [path.join(repoRoot, "bin", "skillsbase.mjs"), "sync", "--check", "--repo", targetRepo],
+    "npm",
+    ["--prefix", repoRoot, "run", "sync:check"],
     {
-      cwd: repoRoot,
-      env: {
-        ...process.env,
-        GITHUB_ACTIONS: "true",
-      },
+      cwd: os.tmpdir(),
+      env: childEnv,
       maxBuffer: 16 * 1024 * 1024,
-      timeout: 60_000,
+      timeout: 420_000,
     },
   );
 
-  const output = `${stdout}${stderr}`.toLowerCase();
-  assert.match(output, /skipped missing sources|no drift detected/);
+  assert.match(`${stdout}${stderr}`.toLowerCase(), /no drift detected/);
 });
