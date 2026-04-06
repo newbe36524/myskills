@@ -1,9 +1,0 @@
-{
-  "schemaVersion": 1,
-  "skillId": "github/awesome-copilot/documentation-writer",
-  "source": "github/awesome-copilot",
-  "skillSlug": "documentation-writer",
-  "normalizedSkillKey": "github/awesome-copilot@documentation-writer",
-  "installReference": "github/awesome-copilot@documentation-writer",
-  "recordedAtUtc": "2026-03-30T12:46:50.8807948+00:00"
-}

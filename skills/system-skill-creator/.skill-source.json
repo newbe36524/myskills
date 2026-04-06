@@ -1,17 +1,25 @@
 {
   "schemaVersion": 1,
   "managed": true,
-  "managedBy": "scripts/sync-skills.mjs",
+  "managedBy": "skillsbase",
   "sourceKey": "system",
   "sourceKind": "mirrored-system",
   "sourceLabel": "Mirrored system skills",
   "sourceRoot": "/home/newbe36524/.codex/skills/.system",
   "sourcePath": "/home/newbe36524/.codex/skills/.system/skill-creator",
   "originalName": "skill-creator",
-  "installName": "system-skill-creator",
   "targetName": "system-skill-creator",
   "targetPath": "skills/system-skill-creator",
   "remoteRepository": "newbe36524/myskills",
+  "installAgent": "codex",
+  "installReference": "/home/newbe36524/.codex/skills/.system/skill-creator",
+  "installedMetadata": {
+    "schemaVersion": 1,
+    "source": "/home/newbe36524/.codex/skills/.system",
+    "skillSlug": "skill-creator",
+    "installReference": "/home/newbe36524/.codex/skills/.system/skill-creator",
+    "synthesizedBy": "skillsbase"
+  },
   "files": [
     "agents/openai.yaml",
     "assets/skill-creator-small.svg",

@@ -1,19 +1,28 @@
 {
   "schemaVersion": 1,
   "managed": true,
-  "managedBy": "scripts/sync-skills.mjs",
+  "managedBy": "skillsbase",
   "sourceKey": "first-party",
   "sourceKind": "first-party",
   "sourceLabel": "First-party local skills",
   "sourceRoot": "/home/newbe36524/.agents/skills",
   "sourcePath": "/home/newbe36524/.agents/skills/find-skills",
   "originalName": "find-skills",
-  "installName": "find-skills",
   "targetName": "find-skills",
   "targetPath": "skills/find-skills",
   "remoteRepository": "newbe36524/myskills",
+  "installAgent": "codex",
+  "installReference": "/home/newbe36524/.agents/skills/find-skills",
+  "installedMetadata": {
+    "schemaVersion": 1,
+    "skillId": "vercel-labs/skills/find-skills",
+    "source": "vercel-labs/skills",
+    "skillSlug": "find-skills",
+    "normalizedSkillKey": "vercel-labs/skills@find-skills",
+    "installReference": "vercel-labs/skills@find-skills",
+    "recordedAtUtc": "2026-03-31T08:39:01.3844248+00:00"
+  },
   "files": [
-    "hagicode-skill.json",
     "SKILL.md"
   ]
 }

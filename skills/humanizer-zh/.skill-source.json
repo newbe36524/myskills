@@ -1,19 +1,28 @@
 {
   "schemaVersion": 1,
   "managed": true,
-  "managedBy": "scripts/sync-skills.mjs",
+  "managedBy": "skillsbase",
   "sourceKey": "first-party",
   "sourceKind": "first-party",
   "sourceLabel": "First-party local skills",
   "sourceRoot": "/home/newbe36524/.agents/skills",
   "sourcePath": "/home/newbe36524/.agents/skills/humanizer-zh",
   "originalName": "humanizer-zh",
-  "installName": "humanizer-zh",
   "targetName": "humanizer-zh",
   "targetPath": "skills/humanizer-zh",
   "remoteRepository": "newbe36524/myskills",
+  "installAgent": "codex",
+  "installReference": "/home/newbe36524/.agents/skills/humanizer-zh",
+  "installedMetadata": {
+    "schemaVersion": 1,
+    "skillId": "op7418/humanizer-zh/humanizer-zh",
+    "source": "op7418/humanizer-zh",
+    "skillSlug": "humanizer-zh",
+    "normalizedSkillKey": "op7418/humanizer-zh@humanizer-zh",
+    "installReference": "op7418/humanizer-zh@humanizer-zh",
+    "recordedAtUtc": "2026-03-31T08:39:40.6116576+00:00"
+  },
   "files": [
-    "hagicode-skill.json",
     "LICENSE",
     "README.md",
     "SKILL.md"

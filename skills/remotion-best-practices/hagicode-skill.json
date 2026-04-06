@@ -1,9 +1,0 @@
-{
-  "schemaVersion": 1,
-  "skillId": "remotion-dev/skills/remotion-best-practices",
-  "source": "remotion-dev/skills",
-  "skillSlug": "remotion-best-practices",
-  "normalizedSkillKey": "remotion-dev/skills@remotion-best-practices",
-  "installReference": "remotion-dev/skills@remotion-best-practices",
-  "recordedAtUtc": "2026-03-31T08:39:49.5849436+00:00"
-}

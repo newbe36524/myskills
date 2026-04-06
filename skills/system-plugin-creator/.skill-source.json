@@ -1,17 +1,25 @@
 {
   "schemaVersion": 1,
   "managed": true,
-  "managedBy": "scripts/sync-skills.mjs",
+  "managedBy": "skillsbase",
   "sourceKey": "system",
   "sourceKind": "mirrored-system",
   "sourceLabel": "Mirrored system skills",
   "sourceRoot": "/home/newbe36524/.codex/skills/.system",
   "sourcePath": "/home/newbe36524/.codex/skills/.system/plugin-creator",
   "originalName": "plugin-creator",
-  "installName": "system-plugin-creator",
   "targetName": "system-plugin-creator",
   "targetPath": "skills/system-plugin-creator",
   "remoteRepository": "newbe36524/myskills",
+  "installAgent": "codex",
+  "installReference": "/home/newbe36524/.codex/skills/.system/plugin-creator",
+  "installedMetadata": {
+    "schemaVersion": 1,
+    "source": "/home/newbe36524/.codex/skills/.system",
+    "skillSlug": "plugin-creator",
+    "installReference": "/home/newbe36524/.codex/skills/.system/plugin-creator",
+    "synthesizedBy": "skillsbase"
+  },
   "files": [
     "agents/openai.yaml",
     "assets/plugin-creator-small.svg",

@@ -1,9 +1,0 @@
-{
-  "schemaVersion": 1,
-  "skillId": "anthropics/skills/skill-creator",
-  "source": "anthropics/skills",
-  "skillSlug": "skill-creator",
-  "normalizedSkillKey": "anthropics/skills@skill-creator",
-  "installReference": "anthropics/skills@skill-creator",
-  "recordedAtUtc": "2026-03-31T08:40:14.6904983+00:00"
-}

@@ -1,9 +1,0 @@
-{
-  "schemaVersion": 1,
-  "skillId": "anthropics/skills/frontend-design",
-  "source": "anthropics/skills",
-  "skillSlug": "frontend-design",
-  "normalizedSkillKey": "anthropics/skills@frontend-design",
-  "installReference": "anthropics/skills@frontend-design",
-  "recordedAtUtc": "2026-03-31T08:39:25.8243453+00:00"
-}

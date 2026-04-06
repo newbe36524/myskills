@@ -1,19 +1,28 @@
 {
   "schemaVersion": 1,
   "managed": true,
-  "managedBy": "scripts/sync-skills.mjs",
+  "managedBy": "skillsbase",
   "sourceKey": "first-party",
   "sourceKind": "first-party",
   "sourceLabel": "First-party local skills",
   "sourceRoot": "/home/newbe36524/.agents/skills",
   "sourcePath": "/home/newbe36524/.agents/skills/frontend-design",
   "originalName": "frontend-design",
-  "installName": "frontend-design",
   "targetName": "frontend-design",
   "targetPath": "skills/frontend-design",
   "remoteRepository": "newbe36524/myskills",
+  "installAgent": "codex",
+  "installReference": "/home/newbe36524/.agents/skills/frontend-design",
+  "installedMetadata": {
+    "schemaVersion": 1,
+    "skillId": "anthropics/skills/frontend-design",
+    "source": "anthropics/skills",
+    "skillSlug": "frontend-design",
+    "normalizedSkillKey": "anthropics/skills@frontend-design",
+    "installReference": "anthropics/skills@frontend-design",
+    "recordedAtUtc": "2026-03-31T08:39:25.8243453+00:00"
+  },
   "files": [
-    "hagicode-skill.json",
     "LICENSE.txt",
     "SKILL.md"
   ]
