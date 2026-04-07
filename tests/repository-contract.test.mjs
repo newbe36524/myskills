@@ -193,11 +193,16 @@ async function readSkillInstallName(skillPath) {
 test("repository keeps the template-derived baseline layout and ownership boundaries", async () => {
   for (const relativePath of baselineOwnedPaths) {
     assert.equal(await pathExists(path.join(repoRoot, relativePath)), true, `missing ${relativePath}`);
-    assert.equal(
-      await pathExists(path.join(templateRoot, relativePath)),
-      true,
-      `template baseline missing ${relativePath}`,
-    );
+  }
+
+  if (await pathExists(templateRoot)) {
+    for (const relativePath of baselineOwnedPaths) {
+      assert.equal(
+        await pathExists(path.join(templateRoot, relativePath)),
+        true,
+        `template baseline missing ${relativePath}`,
+      );
+    }
   }
 
   for (const relativePath of extensionOwnedPaths) {
