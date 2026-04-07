@@ -8,6 +8,11 @@ remoteRepository: newbe36524/myskills
 staleCleanup: true
 skillsCliVersion: 1.4.8
 installAgent: codex
-
-# Repository-specific source blocks extend the template baseline below.
-sources: []
+sources:
+  - key: github-awesome-copilot
+    label: "GitHub Awesome Copilot skills"
+    kind: github-repository
+    root: github/awesome-copilot
+    targetPrefix: ""
+    include:
+      - documentation-writer
