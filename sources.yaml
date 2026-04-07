@@ -16,3 +16,24 @@ sources:
     targetPrefix: ""
     include:
       - documentation-writer
+  - key: op7418-humanizer-zh
+    label: "humanizer-zh repository"
+    kind: github-repository
+    root: op7418/humanizer-zh
+    targetPrefix: ""
+    include:
+      - humanizer-zh
+  - key: nextlevelbuilder-ui-ux-pro-max
+    label: "UI UX Pro Max skills"
+    kind: github-repository
+    root: nextlevelbuilder/ui-ux-pro-max-skill
+    targetPrefix: ""
+    include:
+      - ui-ux-pro-max
+  - key: vercel-labs-agent-skills
+    label: "Vercel Labs agent skills"
+    kind: github-repository
+    root: vercel-labs/agent-skills
+    targetPrefix: ""
+    include:
+      - vercel-react-best-practices
