@@ -18,7 +18,9 @@ const baselineOwnedPaths = [
   "docs/maintainer-workflow.md",
   "skills/README.md",
   ".github/workflows/skills-sync.yml",
+  ".github/workflows/skills-manage.yml",
   ".github/actions/skillsbase-sync/action.yml",
+  ".github/actions/skillsbase-manage/action.yml",
 ];
 const extensionOwnedPaths = ["tests/repository-contract.test.mjs"];
 const obsoletePaths = [
@@ -220,27 +222,39 @@ test("maintainer entrypoints stay template-aligned", async () => {
   assert.equal(packageJson.scripts["sync:check"], "skillsbase sync --check --repo .");
   assert.equal(packageJson.scripts.test, "node --test ./tests/*.test.mjs");
 
-  const [readme, workflowDoc, skillsReadme, workflow, action] = await Promise.all([
+  const [readme, workflowDoc, skillsReadme, workflow, manageWorkflow, action, manageAction] = await Promise.all([
     fs.readFile(path.join(repoRoot, "README.md"), "utf8"),
     fs.readFile(path.join(repoRoot, "docs/maintainer-workflow.md"), "utf8"),
     fs.readFile(path.join(repoRoot, "skills/README.md"), "utf8"),
     fs.readFile(path.join(repoRoot, ".github/workflows/skills-sync.yml"), "utf8"),
+    fs.readFile(path.join(repoRoot, ".github/workflows/skills-manage.yml"), "utf8"),
     fs.readFile(path.join(repoRoot, ".github/actions/skillsbase-sync/action.yml"), "utf8"),
+    fs.readFile(path.join(repoRoot, ".github/actions/skillsbase-manage/action.yml"), "utf8"),
   ]);
 
   assert.match(readme, /npm ci/);
   assert.match(readme, /npm install --global @hagicode\/skillsbase/);
   assert.match(readme, /skillsbase github_action --kind all --repo \./);
+  assert.match(readme, /skills-manage\.yml/);
+  assert.match(readme, /does not commit, push, or open pull requests/i);
   assert.doesNotMatch(readme, /bin\/skillsbase\.mjs/);
   assert.match(workflowDoc, /npm ci/);
   assert.match(workflowDoc, /npm install --global @hagicode\/skillsbase/);
   assert.match(workflowDoc, /kind:\s*github-repository/);
+  assert.match(workflowDoc, /GitHub Maintenance Path/);
+  assert.match(workflowDoc, /Local CLI commands remain the primary maintainer path/);
+  assert.match(workflowDoc, /does not commit, push, or open pull requests/i);
   assert.doesNotMatch(workflowDoc, /bin\/skillsbase\.mjs/);
   assert.match(skillsReadme, /GitHub-sourced community skills/);
-  assert.match(workflow, /npm install --global @hagicode\/skillsbase/);
-  assert.match(workflow, /skillsbase sync --check --repo \./);
+  assert.match(workflow, /uses: \.\/\.github\/actions\/skillsbase-sync/);
+  assert.match(manageWorkflow, /workflow_dispatch:/);
+  assert.match(manageWorkflow, /operation:/);
+  assert.match(manageWorkflow, /uses: \.\/\.github\/actions\/skillsbase-manage/);
   assert.match(action, /npm install --global @hagicode\/skillsbase/);
   assert.match(action, /skillsbase sync --check --repo \./);
+  assert.match(manageAction, /allow-missing-sources:/);
+  assert.match(manageAction, /case "\$\{OPERATION\}" in/);
+  assert.match(manageAction, /command=\(skillsbase "\$\{OPERATION\}"/);
 });
 
 test("manifest and managed metadata follow the skillsbase contract", async () => {
