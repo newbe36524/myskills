@@ -42,6 +42,18 @@ Regenerate the managed GitHub workflow or composite action only when the automat
 skillsbase github_action --kind all --repo .
 ```
 
+## GitHub Maintenance Path
+
+The managed GitHub automation also exposes `.github/workflows/skills-manage.yml` for explicit non-interactive maintenance.
+
+- Set `operation` to `add`, `remove`, or `sync`
+- Provide `skill-name` for `add` and `remove`
+- Use `source` only when the manifest needs an explicit source key
+- Enable `allow-missing-sources` only for hosted CI cases where a local source root may be absent
+- Leave `run-tests` enabled when the runner should validate the repository after the maintenance command
+
+This is an automation path only. Local CLI commands remain primary, and the workflow does not commit, push, or open pull requests.
+
 ## Repository-Specific Sources
 
 `sources.yaml` is the single source of truth for the baseline manifest keys plus the repository-specific source blocks.
@@ -57,5 +69,6 @@ skillsbase github_action --kind all --repo .
 - `npm test` validates the committed repository contract, GitHub source declarations, and `npx skills add . --list` compatibility.
 - `npm run sync` refreshes managed content from the declared GitHub repositories.
 - `npm run sync:check` verifies drift without writing files.
+- `.github/workflows/skills-manage.yml` provides the GitHub UI-triggered maintenance entrypoint without any Git write-back.
 
 For the full maintainer flow and the ownership audit, see `docs/maintainer-workflow.md`.
