@@ -7,7 +7,7 @@ inputs:
   node-version:
     description: Node.js version used for maintenance
     required: false
-    default: "22.12.0"
+    default: "24"
   operation:
     description: Maintenance operation to run (`add`, `remove`, or `sync`)
     required: true

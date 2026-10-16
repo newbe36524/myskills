@@ -46,7 +46,7 @@ jobs:
       - name: Run skillsbase maintenance
         uses: ./.github/actions/skillsbase-manage
         with:
-          node-version: 22.12.0
+          node-version: 24
           operation: ${{ inputs.operation }}
           skill-name: ${{ inputs.skill-name }}
           source: ${{ inputs.source }}

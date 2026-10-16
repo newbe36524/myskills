@@ -26,5 +26,5 @@ jobs:
       - name: Run skillsbase validation
         uses: ./.github/actions/skillsbase-sync
         with:
-          node-version: 22.12.0
+          node-version: 24
           run-tests: "true"
