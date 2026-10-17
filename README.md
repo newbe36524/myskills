@@ -1,5 +1,7 @@
 # myskills
 
+[![last commit](https://img.shields.io/github/last-commit/newbe36524/myskills)](https://github.com/newbe36524/myskills/commits/main)
+
 `myskills` is the template-derived `skillsbase` repository that publishes the managed install surface for `newbe36524/myskills`.
 
 ## Install
