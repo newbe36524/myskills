@@ -30,7 +30,7 @@ Requires Node.js 24+. The `skillsbase` CLI must be installed globally (as CI doe
 - `sources.yaml`: single source of truth for the manifest and the managed skill sources
 - `tests/`: repository tests (`repository-contract.test.mjs`)
 - `docs/maintainer-workflow.md`: maintainer flow and ownership audit
-- `.github/`: managed workflows and composite actions (regenerate with `skillsbase github_action --kind all --repo .`)
+- `.github/`: managed workflows and composite actions (regenerate with `skillsbase github_action --kind all --repo .`); `skills-sync.yml` validates sync on pull requests and pushes to `main`, and `skills-manage.yml` is a manual `add` / `remove` / `sync` dispatch
 
 ## Agent Guidelines
 
