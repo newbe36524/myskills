@@ -22,7 +22,7 @@ npm run sync:check
 npm test
 ```
 
-Requires Node.js 24+. The `skillsbase` CLI must be installed globally (as CI does) before `sync` / `sync:check`.
+Requires Node.js 24+. The `skillsbase` CLI must be installed globally (as CI does) before `sync` / `sync:check`. `package.json` also lists `@hagicode/skillsbase` as `file:../skillsbase`, so a plain `npm install` / `npm ci` expects the sibling `skillsbase` checkout next to this repo.
 
 ## Key Paths
 
