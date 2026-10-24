@@ -2,7 +2,7 @@
 
 [![last commit](https://img.shields.io/github/last-commit/newbe36524/myskills)](https://github.com/newbe36524/myskills/commits/main)
 
-`myskills` is the template-derived `skillsbase` repository that publishes the managed install surface for `newbe36524/myskills`.
+`myskills` is a curated, ready-to-install collection of agent skills for your coding agent. Each skill is synced from its upstream GitHub repository and published as `newbe36524/myskills`.
 
 ## Install
 
@@ -18,59 +18,17 @@ Local repository listing:
 npx skills add . --list
 ```
 
-## Template-Derived Structure
+## Available skills
 
-- Baseline-owned paths: `package.json`, `sources.yaml`, `README.md`, `docs/maintainer-workflow.md`, `skills/README.md`, and `.github/**`
-- Extension-owned paths: the repository-specific source blocks in `sources.yaml`, `skills/<name>/`, `skills/system-<name>/`, and `tests/repository-contract.test.mjs`
-- Obsolete paths: do not reintroduce ad hoc root scripts such as `scripts/sync-skills.mjs` or `scripts/validate-skills.mjs`
+| Skill | Purpose |
+| --- | --- |
+| `documentation-writer` | Diátaxis documentation expert for writing high-quality software documentation. |
+| `humanizer-zh` | Removes AI-generated traces from Chinese text so it reads more naturally. |
+| `ui-ux-pro-max` | UI/UX design intelligence for web and mobile: styles, color palettes, font pairings and UX guidelines. |
+| `vercel-react-best-practices` | React and Next.js performance optimization guidelines from Vercel Engineering. |
 
-## Maintenance Commands
+Skills keep their upstream names. Where each skill comes from is recorded per skill in its `.skill-source.json` file.
 
-Run all maintainer commands from the repository root:
+## Maintainers
 
-```bash
-npm ci
-npm install --global @hagicode/skillsbase
-npm run sync
-npm run sync:check
-npm test
-```
-
-These commands keep the template maintenance surface. CI installs `skillsbase` globally before running the drift check.
-
-Regenerate the managed GitHub workflow or composite action only when the automation templates change:
-
-```bash
-skillsbase github_action --kind all --repo .
-```
-
-## GitHub Maintenance Path
-
-The managed GitHub automation also exposes `.github/workflows/skills-manage.yml` for explicit non-interactive maintenance.
-
-- Set `operation` to `add`, `remove`, or `sync`
-- Provide `skill-name` for `add` and `remove`
-- Use `source` only when the manifest needs an explicit source key
-- Enable `allow-missing-sources` only for hosted CI cases where a local source root may be absent
-- Leave `run-tests` enabled when the runner should validate the repository after the maintenance command
-
-This is an automation path only. Local CLI commands remain primary, and the workflow does not commit, push, or open pull requests.
-
-## Repository-Specific Sources
-
-`sources.yaml` is the single source of truth for the baseline manifest keys plus the repository-specific source blocks.
-
-- Every managed skill syncs from an explicit GitHub repository source that can be resolved with `npx skills`.
-- Community skills keep their original directory names.
-- OpenAI-hosted skills are published as `system-<name>` to avoid collisions.
-- `skills/` contains committed managed output only.
-- Every managed skill directory includes `.skill-source.json`, which records provenance, target naming, and the managed file list.
-
-## Validation
-
-- `npm test` validates the committed repository contract, GitHub source declarations, and `npx skills add . --list` compatibility.
-- `npm run sync` refreshes managed content from the declared GitHub repositories.
-- `npm run sync:check` verifies drift without writing files.
-- `.github/workflows/skills-manage.yml` provides the GitHub UI-triggered maintenance entrypoint without any Git write-back.
-
-For the full maintainer flow and the ownership audit, see `docs/maintainer-workflow.md`.
+For how this repository is maintained, see [`docs/maintainer-workflow.md`](docs/maintainer-workflow.md).
